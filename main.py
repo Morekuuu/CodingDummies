@@ -4,7 +4,7 @@ from tkinter import filedialog, ttk, simpledialog
 
 # Zmienne globalne
 current_page = 0
-rows_per_page = 10
+rows_per_page = 25
 df = pd.DataFrame()
 
 # Funkcja do wczytywania pliku CSV
@@ -43,6 +43,10 @@ def display_data():
     for index, row in page_data.iterrows():
         table.insert("", "end", values=list(row))
 
+    # Aktualizacja informacji o stronie
+    total_pages = (len(df) + rows_per_page - 1) // rows_per_page
+    page_info_label.config(text=f"Page {current_page + 1} of {total_pages}")
+
 # Funkcja do filtrowania danych według kolumny "Habitat"
 def filter_habitat():
     global df, current_page
@@ -71,26 +75,6 @@ root = tk.Tk()
 root.title("CSV Viewer")
 root.geometry("600x400")
 
-# Ramka na przyciski
-button_frame = tk.Frame(root)
-button_frame.pack(pady=10)
-
-# Przycisk do wczytywania pliku CSV
-load_button = tk.Button(button_frame, text="Load CSV", command=load_csv)
-load_button.pack(side="left", padx=5)
-
-# Przycisk "Filter Habitat"
-filter_button = tk.Button(button_frame, text="Filter Habitat", command=filter_habitat)
-filter_button.pack(side="left", padx=5)
-
-# Przycisk "Previous"
-prev_button = tk.Button(button_frame, text="Previous", command=previous_page)
-prev_button.pack(side="left", padx=5)
-
-# Przycisk "Next"
-next_button = tk.Button(button_frame, text="Next", command=next_page)
-next_button.pack(side="left", padx=5)
-
 # Ramka na tabelę i scrollbary
 frame = tk.Frame(root)
 frame.pack(expand=True, fill="both")
@@ -109,6 +93,34 @@ hsb.pack(side="bottom", fill="x")
 # Powiązanie scrollbara z tabelą
 table.configure(yscrollcommand=vsb.set, xscrollcommand=hsb.set)
 table.pack(expand=True, fill="both")
+
+# Ramka na przyciski nawigacyjne
+nav_frame = tk.Frame(root)
+nav_frame.pack(pady=10)
+
+# Przycisk "Previous"
+prev_button = tk.Button(nav_frame, text="Previous", command=previous_page)
+prev_button.pack(side="left", padx=5)
+
+# Przycisk "Next"
+next_button = tk.Button(nav_frame, text="Next", command=next_page)
+next_button.pack(side="left", padx=5)
+
+# Ramka na przyciski
+button_frame = tk.Frame(root)
+button_frame.pack(pady=10)
+
+# Przycisk do wczytywania pliku CSV
+load_button = tk.Button(button_frame, text="Load CSV", command=load_csv)
+load_button.pack(side="left", padx=5)
+
+# Przycisk "Filter Habitat"
+filter_button = tk.Button(button_frame, text="Filter Habitat", command=filter_habitat)
+filter_button.pack(side="left", padx=5)
+
+# Etykieta z informacją o stronie
+page_info_label = tk.Label(root, text="Page 1 of 1")
+page_info_label.pack(pady=5)
 
 # Start aplikacji
 root.mainloop()
