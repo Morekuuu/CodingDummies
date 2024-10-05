@@ -1,19 +1,27 @@
 import pandas as pd
 import tkinter as tk
-from tkinter import filedialog, ttk
+from tkinter import filedialog, ttk, simpledialog
+
+# Zmienne globalne
+current_page = 0
+rows_per_page = 10
+df = pd.DataFrame()
 
 # Funkcja do wczytywania pliku CSV
 def load_csv():
+    global df, current_page
     filepath = filedialog.askopenfilename(filetypes=[("CSV files", "*.csv")])
     if filepath:
         try:
             df = pd.read_csv(filepath)  # Wczytanie pliku CSV do DataFrame Pandas
-            display_data(df)            # Wyświetlenie danych
+            current_page = 0
+            display_data()            # Wyświetlenie danych
         except Exception as e:
             print(f"Error: {e}")
 
 # Funkcja do wyświetlania danych w tabeli
-def display_data(df):
+def display_data():
+    global current_page, rows_per_page, df
     # Czyszczenie poprzednich danych z tabeli
     for row in table.get_children():
         table.delete(row)
@@ -26,13 +34,37 @@ def display_data(df):
     for col in df.columns:
         table.heading(col, text=col)
 
+    # Obliczenie zakresu wierszy do wyświetlenia
+    start_row = current_page * rows_per_page
+    end_row = start_row + rows_per_page
+    page_data = df.iloc[start_row:end_row]
+
     # Dodanie danych z CSV do tabeli
-    for index, row in df.iterrows():
+    for index, row in page_data.iterrows():
         table.insert("", "end", values=list(row))
 
-# Pusta funkcja dla przycisku "Filter Habitat"
+# Funkcja do filtrowania danych według kolumny "Habitat"
 def filter_habitat():
-    pass
+    global df, current_page
+    habitat = simpledialog.askstring("Input", "Enter habitat to filter:")
+    if habitat:
+        filtered_df = df[df['Habitat'] == habitat]
+        df = filtered_df
+        current_page = 0
+        display_data()
+
+# Funkcje do nawigacji między stronami
+def next_page():
+    global current_page
+    if (current_page + 1) * rows_per_page < len(df):
+        current_page += 1
+        display_data()
+
+def previous_page():
+    global current_page
+    if current_page > 0:
+        current_page -= 1
+        display_data()
 
 # Utworzenie okna aplikacji
 root = tk.Tk()
@@ -50,6 +82,14 @@ load_button.pack(side="left", padx=5)
 # Przycisk "Filter Habitat"
 filter_button = tk.Button(button_frame, text="Filter Habitat", command=filter_habitat)
 filter_button.pack(side="left", padx=5)
+
+# Przycisk "Previous"
+prev_button = tk.Button(button_frame, text="Previous", command=previous_page)
+prev_button.pack(side="left", padx=5)
+
+# Przycisk "Next"
+next_button = tk.Button(button_frame, text="Next", command=next_page)
+next_button.pack(side="left", padx=5)
 
 # Ramka na tabelę i scrollbary
 frame = tk.Frame(root)
