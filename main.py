@@ -1,6 +1,7 @@
 import pandas as pd
 import tkinter as tk
 from tkinter import filedialog, ttk, simpledialog
+import math
 
 # Zmienne globalne
 current_page = 0
@@ -50,10 +51,22 @@ def display_data():
 # Funkcja do filtrowania danych według kolumny "sy_snum" i "discoverymethod"
 def filter_sy_snum():
     global df, current_page
-    filtered_df = df[(df['sy_snum'] == 1) & (df['discoverymethod'] != 'Microlensing') & (df["pl_bmasse"] < 10) & (df["pl_rade"] < 2)]
+    filtered_df = df[(df['discoverymethod'] != 'Microlensing') & (df["pl_bmasse"] < 10) & (df["pl_rade"] < 2.5)]
+
+    # Dodanie nowej kolumny z wynikiem mnożenia "pl_rade" i "pl_bmasse"
+    filtered_df['SNR'] = (166.667 * filtered_df['pl_rade'] * filtered_df['st_rad'] * 6) / (filtered_df['pl_orbsmax'] * filtered_df['sy_dist'])
+
+    # Filtrowanie wartości SNR większych od 5
+    filtered_df = filtered_df[filtered_df['SNR'] > 5]
+    filtered_df = filtered_df[filtered_df['pl_rade'] > (0.364*filtered_df['pl_bmasse']+0.45)]
+    filtered_df = filtered_df[filtered_df['pl_rade'] < (0.364*filtered_df['pl_bmasse']+1.05)]
+    filtered_df = filtered_df[filtered_df['sy_dist'] < (15/filtered_df['pl_orbsmax'])]
+    filtered_df = filtered_df[filtered_df['pl_orbsmax'] < (-3.7736 * filtered_df['st_met']+ 2.0642)]
+    filtered_df = filtered_df[filtered_df['pl_orbsmax'] > (-9.434 * filtered_df['st_met'] + 1.3604)]
     df = filtered_df
     current_page = 0
     display_data()
+
 
 # Funkcje do nawigacji między stronami
 def next_page():
