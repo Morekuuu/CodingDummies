@@ -30,14 +30,26 @@ def display_data(df):
     for index, row in df.iterrows():
         table.insert("", "end", values=list(row))
 
+# Pusta funkcja dla przycisku "Filter Habitat"
+def filter_habitat():
+    pass
+
 # Utworzenie okna aplikacji
 root = tk.Tk()
 root.title("CSV Viewer")
 root.geometry("600x400")
 
+# Ramka na przyciski
+button_frame = tk.Frame(root)
+button_frame.pack(pady=10)
+
 # Przycisk do wczytywania pliku CSV
-load_button = tk.Button(root, text="Load CSV", command=load_csv)
-load_button.pack(pady=10)
+load_button = tk.Button(button_frame, text="Load CSV", command=load_csv)
+load_button.pack(side="left", padx=5)
+
+# Przycisk "Filter Habitat"
+filter_button = tk.Button(button_frame, text="Filter Habitat", command=filter_habitat)
+filter_button.pack(side="left", padx=5)
 
 # Ramka na tabelę i scrollbary
 frame = tk.Frame(root)
