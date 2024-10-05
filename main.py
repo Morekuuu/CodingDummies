@@ -25,7 +25,6 @@ def display_data(df):
     # Dodanie nagłówków kolumn do tabeli
     for col in df.columns:
         table.heading(col, text=col)
-        table.column(col, width=100, anchor="center")  # Dopasowanie szerokości kolumn
 
     # Dodanie danych z CSV do tabeli
     for index, row in df.iterrows():
@@ -34,31 +33,30 @@ def display_data(df):
 # Utworzenie okna aplikacji
 root = tk.Tk()
 root.title("CSV Viewer")
-root.geometry("800x600")
+root.geometry("600x400")
 
 # Przycisk do wczytywania pliku CSV
 load_button = tk.Button(root, text="Load CSV", command=load_csv)
 load_button.pack(pady=10)
 
-# Frame dla tabeli i pasków przewijania
+# Ramka na tabelę i scrollbary
 frame = tk.Frame(root)
-frame.pack(fill="both", expand=True)
+frame.pack(expand=True, fill="both")
 
-# Tworzenie tabeli (Treeview)
-table = ttk.Treeview(frame, show="headings")
+# Tabela do wyświetlania danych
+table = ttk.Treeview(frame)
 
-# Pionowy pasek przewijania
+# Pionowy scrollbar
 vsb = ttk.Scrollbar(frame, orient="vertical", command=table.yview)
 vsb.pack(side="right", fill="y")
-table.configure(yscrollcommand=vsb.set)
 
-# Poziomy pasek przewijania
+# Poziomy scrollbar
 hsb = ttk.Scrollbar(frame, orient="horizontal", command=table.xview)
 hsb.pack(side="bottom", fill="x")
-table.configure(xscrollcommand=hsb.set)
 
-# Umieszczamy tabelę w ramce
-table.pack(fill="both", expand=True)
+# Powiązanie scrollbara z tabelą
+table.configure(yscrollcommand=vsb.set, xscrollcommand=hsb.set)
+table.pack(expand=True, fill="both")
 
 # Start aplikacji
 root.mainloop()
