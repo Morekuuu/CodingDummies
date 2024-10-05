@@ -50,7 +50,7 @@ def display_data():
 # Funkcja do filtrowania danych według kolumny "sy_snum" i "discoverymethod"
 def filter_sy_snum():
     global df, current_page
-    filtered_df = df[(df['sy_snum'] == 1) & (df['discoverymethod'] != 'Microlensing')]
+    filtered_df = df[(df['sy_snum'] == 1) & (df['discoverymethod'] != 'Microlensing') & (df["pl_bmasse"] < 10) & (df["pl_rade"] < 2)]
     df = filtered_df
     current_page = 0
     display_data()
@@ -117,7 +117,7 @@ load_button = tk.Button(button_frame, text="Load CSV", command=load_csv)
 load_button.pack(side="left", padx=5)
 
 # Przycisk "Filter sy_snum"
-filter_button = tk.Button(button_frame, text="Filter sy_snum", command=filter_sy_snum)
+filter_button = tk.Button(button_frame, text="Filter Habitat", command=filter_sy_snum)
 filter_button.pack(side="left", padx=5)
 
 # Start aplikacji
