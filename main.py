@@ -67,6 +67,19 @@ def filter_sy_snum():
     current_page = 0
     display_data()
 
+# Funkcja do eksportowania odfiltrowanych danych do CSV
+def export_csv():
+    global df
+    if not df.empty:
+        filepath = filedialog.asksaveasfilename(defaultextension=".csv", filetypes=[("CSV files", "*.csv")])
+        if filepath:
+            try:
+                df.to_csv(filepath, index=False)  # Zapis DataFrame do pliku CSV
+                print(f"Dane zapisane do pliku: {filepath}")
+            except Exception as e:
+                print(f"Error: {e}")
+    else:
+        print("Brak danych do zapisania.")
 
 # Funkcje do nawigacji między stronami
 def next_page():
@@ -132,6 +145,10 @@ load_button.pack(side="left", padx=5)
 # Przycisk "Filter sy_snum"
 filter_button = tk.Button(button_frame, text="Filter Habitat", command=filter_sy_snum)
 filter_button.pack(side="left", padx=5)
+
+# Przycisk do eksportowania danych
+export_button = tk.Button(button_frame, text="Export CSV", command=export_csv)
+export_button.pack(side="left", padx=5)
 
 # Start aplikacji
 root.mainloop()
