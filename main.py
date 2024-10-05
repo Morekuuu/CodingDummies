@@ -98,6 +98,10 @@ table.pack(expand=True, fill="both")
 nav_frame = tk.Frame(root)
 nav_frame.pack(pady=10)
 
+# Etykieta z informacją o stronie
+page_info_label = tk.Label(nav_frame, text="Page 1 of 1")
+page_info_label.pack(side="left", padx=5)
+
 # Przycisk "Previous"
 prev_button = tk.Button(nav_frame, text="Previous", command=previous_page)
 prev_button.pack(side="left", padx=5)
@@ -117,10 +121,6 @@ load_button.pack(side="left", padx=5)
 # Przycisk "Filter Habitat"
 filter_button = tk.Button(button_frame, text="Filter Habitat", command=filter_habitat)
 filter_button.pack(side="left", padx=5)
-
-# Etykieta z informacją o stronie
-page_info_label = tk.Label(root, text="Page 1 of 1")
-page_info_label.pack(pady=5)
 
 # Start aplikacji
 root.mainloop()
