@@ -47,15 +47,13 @@ def display_data():
     total_pages = (len(df) + rows_per_page - 1) // rows_per_page
     page_info_label.config(text=f"Page {current_page + 1} of {total_pages}")
 
-# Funkcja do filtrowania danych według kolumny "Habitat"
-def filter_habitat():
+# Funkcja do filtrowania danych według kolumny "sy_snum"
+def filter_sy_snum():
     global df, current_page
-    habitat = simpledialog.askstring("Input", "Enter habitat to filter:")
-    if habitat:
-        filtered_df = df[df['Habitat'] == habitat]
-        df = filtered_df
-        current_page = 0
-        display_data()
+    filtered_df = df[df['sy_snum'] == 1]
+    df = filtered_df
+    current_page = 0
+    display_data()
 
 # Funkcje do nawigacji między stronami
 def next_page():
@@ -118,8 +116,8 @@ button_frame.pack(pady=10)
 load_button = tk.Button(button_frame, text="Load CSV", command=load_csv)
 load_button.pack(side="left", padx=5)
 
-# Przycisk "Filter Habitat"
-filter_button = tk.Button(button_frame, text="Filter Habitat", command=filter_habitat)
+# Przycisk "Filter sy_snum"
+filter_button = tk.Button(button_frame, text="Filter Habitat", command=filter_sy_snum)
 filter_button.pack(side="left", padx=5)
 
 # Start aplikacji
