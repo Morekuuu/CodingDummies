@@ -47,10 +47,10 @@ def display_data():
     total_pages = (len(df) + rows_per_page - 1) // rows_per_page
     page_info_label.config(text=f"Page {current_page + 1} of {total_pages}")
 
-# Funkcja do filtrowania danych według kolumny "sy_snum"
+# Funkcja do filtrowania danych według kolumny "sy_snum" i "discoverymethod"
 def filter_sy_snum():
     global df, current_page
-    filtered_df = df[df['sy_snum'] == 1]
+    filtered_df = df[(df['sy_snum'] == 1) & (df['discoverymethod'] != 'Microlensing')]
     df = filtered_df
     current_page = 0
     display_data()
@@ -117,7 +117,7 @@ load_button = tk.Button(button_frame, text="Load CSV", command=load_csv)
 load_button.pack(side="left", padx=5)
 
 # Przycisk "Filter sy_snum"
-filter_button = tk.Button(button_frame, text="Filter Habitat", command=filter_sy_snum)
+filter_button = tk.Button(button_frame, text="Filter sy_snum", command=filter_sy_snum)
 filter_button.pack(side="left", padx=5)
 
 # Start aplikacji
