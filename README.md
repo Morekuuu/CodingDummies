@@ -9,3 +9,7 @@ Features:
 * sorting of columns,
 * Uploading the classifier model,
 * Analysis of the selected planet by the classifier model.
+
+![image](https://github.com/user-attachments/assets/ace481aa-2f0a-45e4-b90a-b8fd40245a2c) ![image](https://github.com/user-attachments/assets/69985e51-ad7f-430d-8055-a07a987bac47)
+![image](https://github.com/user-attachments/assets/ff7aeedf-4100-44f8-b06f-8102b712a095)
+
